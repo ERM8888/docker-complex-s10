@@ -19,7 +19,7 @@ after_success:
   # DOCKER_PASSWORD y DOCKER_ID son variables en Travis
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
   # Se coge las imagenes y se ponen un docker hub
-  - docker push -t kike/multi-client
-  - docker push -t kike/multi-nginx
-  - docker push -t kike/multi-server
-  - docker push -t kike/multi-worker
+  - docker push kike/multi-client
+  - docker push kike/multi-nginx
+  - docker push kike/multi-server
+  - docker push kike/multi-worker
