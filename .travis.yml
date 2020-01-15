@@ -7,14 +7,19 @@ before_install:
   - docker build -t kike/docker-react-myself-test -f ./client/Dockerfile.dev ./client
 # Primera test running section: cualquier script que salga de aqui otro que 0 es considerado un error
 script:
-  #- docker run kike/docker-react-myself-test npm test -- --coverage
+  - docker run kike/docker-react-myself-test npm test -- --coverage
 # Si todo ha ido bien en los test, se tiene que ir configurando los build
 # Se crean las imagenes de los 4 proyectos y se suben a docker hub
 after_success:
-  #- docker build -t kike/multi-client ./client
-  #- docker build -t kike/multi-nginx ./nginx
-  #- docker build -t kike/multi-server ./server
-  #- docker build -t kike/multi-worker ./worker
+  - docker build -t kike/multi-client ./client
+  - docker build -t kike/multi-nginx ./nginx
+  - docker build -t kike/multi-server ./server
+  - docker build -t kike/multi-worker ./worker
   # Primero se tiene que login en el docker cli
-
+  # DOCKER_PASSWORD y DOCKER_ID son variables en Travis
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
   # Se coge las imagenes y se ponen un docker hub
+  - docker push -t kike/multi-client
+  - docker push -t kike/multi-nginx
+  - docker push -t kike/multi-server
+  - docker push -t kike/multi-worker
